@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization Result</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h1 class="text-center mb-4">
+        Smart Route Optimization Result
+    </h1>
+
+    <div class="card shadow p-4">
+
+        <h3>
+            Minimum Distance :
+            <span class="text-success">{{ distance }} km</span>
+        </h3>
+
+        <hr>
+
+        <h4>Optimal Route</h4>
+
+        <ol class="list-group list-group-numbered mb-4">
+            {% for city in route %}
+            <li class="list-group-item">{{ city }}</li>
+            {% endfor %}
+        </ol>
+
+        <hr>
+
+        <h4>Locations Considered</h4>
+
+        <table class="table table-bordered table-striped">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Location</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for location in locations %}
+                <tr>
+                    <td>{{ location[0] }}</td>
+                    <td>{{ location[1] }}</td>
+                    <td>{{ location[2] }}</td>
+                    <td>{{ location[3] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+        <hr>
+
+        <h4>Route Map</h4>
+
+        <div id="map" style="height:500px;border-radius:10px;"></div>
+
+        <br>
+
+        <a href="/dashboard" class="btn btn-primary">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+const locations = {{ locations | tojson }};
+
+const map = L.map('map');
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+let points = [];
+
+locations.forEach(function(location){
+
+    let lat = parseFloat(location[2]);
+    let lng = parseFloat(location[3]);
+
+    points.push([lat,lng]);
+
+    L.marker([lat,lng])
+        .addTo(map)
+        .bindPopup("<b>"+location[1]+"</b>");
+
+});
+
+if(points.length>0){
+
+    L.polyline(points,{
+        color:'blue',
+        weight:4
+    }).addTo(map);
+
+    map.fitBounds(points);
+
+}
+
+</script>
+
+</body>
+</html>

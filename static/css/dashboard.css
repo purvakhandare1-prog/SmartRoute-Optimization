@@ -1,0 +1,38 @@
+body{
+    background:#f4f7fb;
+    font-family:'Poppins',sans-serif;
+}
+
+.navbar{
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.card{
+    border:none;
+    border-radius:18px;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
+}
+
+.card i{
+    font-size:55px;
+}
+
+h1,h2,h3,h4,h5{
+    font-weight:700;
+}
+
+.btn{
+    border-radius:10px;
+}
+
+footer{
+    margin-top:50px;
+    padding:20px;
+    text-align:center;
+    color:#666;
+}
